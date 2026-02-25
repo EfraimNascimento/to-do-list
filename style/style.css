@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#to-do-container{
+    background-color: black;
+    color: white;
+    width: 550px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+input[type="text"]{
+    
+}
+
+input[type="text"]{
+    width: 90%;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+}
+
+button#add-btn{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+}
