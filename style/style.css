@@ -12,6 +12,46 @@ body{
     align-items: center;
     width: 100vw;
     height: 100vh;
+    font-family: "Roboto", sans-serif;
+}
+
+#avisos{
+    display: none;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-flow: column nowrap;
+
+    color: white;
+    font-size: 3em;
+    text-align: center;
+    padding: 25px;
+
+    width: 70%;
+    height: 70%;
+    background-color: rgba(0, 0, 0, 0.400);
+    
+    backdrop-filter: blur(10px);
+    border-radius: 15px; 
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#avisos h2{
+    text-shadow: 0px 3px 0px rgba(0, 0, 0, 0.100);
+}
+
+#buttons-modal > button{
+    width: 100px;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid black;
+    cursor: pointer;
+    margin: 15px;
 }
 
 #to-do-container{
@@ -22,12 +62,13 @@ body{
     padding: 10px;
 }
 
-input[type="text"]{
-    
+h1{
+    margin: 20px;
 }
 
 input[type="text"]{
-    width: 90%;
+    width: 75%;
+    margin-left: 5%;
     height: 35px;
     border-radius: 5px;
     border: none;
@@ -38,5 +79,18 @@ button#add-btn{
     width: 35px;
     height: 35px;
     border-radius: 50%;
+    margin-left: 5%;
     border: none;
+    cursor: pointer;
+}
+
+#tarefas{
+    width: fit-content;
+    padding: 10px;
+    margin: 20px;
+}
+
+#tarefas > p{
+    border-bottom: 1px dashed white;
+    margin: 20px;
 }
