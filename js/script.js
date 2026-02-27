@@ -2,23 +2,35 @@ const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
 
+
+
 function loadTasks(){
-    let loadTasks = localStorage.getItem('tarefas', JSON.parse)
+    let loadTasks = localStorage.getItem('tarefas')
 
-    console.log(target.children.length)
-
-    while(loadT
-        console.log(loadTasks)
+    let listaArray = JSON.parse(loadTasks)
+    
+    for(let i = 0; i < listaArray.length; i++){
+        createTask(listaArray[i])   
     }
 
-    
+
 }
 
 
-function createTask(){
+
+
+function createTask(task){
+    
     let taskContent = document.createElement('p');
-    taskContent.innerText = textInput.value
+    taskContent.classList.add('task')
+    
+    taskContent.innerText = task
     target.appendChild(taskContent)
+    
+}
+
+function delTask(item){
+    console.log(`Tarefa: ${item}`)
 }
 
 function warningModal(action){
@@ -41,7 +53,8 @@ function warningModal(action){
 
 function addtask(){
     if(textInput.value != ""){
-        createTask();
+        let actualTask = textInput.value;
+        createTask(actualTask);
         let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
 
         tarefas.push(textInput.value);
@@ -54,5 +67,3 @@ function addtask(){
     }
     
 }
-
-console.log(localStorage)

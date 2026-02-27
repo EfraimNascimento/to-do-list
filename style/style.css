@@ -93,4 +93,5 @@ button#add-btn{
 #tarefas > p{
     border-bottom: 1px dashed white;
     margin: 20px;
+    cursor: pointer;
 }
