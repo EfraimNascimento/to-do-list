@@ -1,58 +1,40 @@
 const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
-const detailsModal = document.getElementById('detailsModal');
 const listaDeTarefas = document.querySelectorAll('#tarefas div')
-let buttonsModal = document.querySelectorAll('#detailsModal button');
-
 let tasks = localStorage.getItem('tarefas');
 let tasksArray = JSON.parse(tasks);
+console.log(tasksArray)
 
 function loadTasks(){
     for(let i = 0; i < tasksArray.length; i++){
         createTask(tasksArray[i], i)
     }
-
 }
 
-
 function createTask(task, id){
+    //Cria a tarefa e insere a mesma na lista
     let taskContent = document.createElement('div');
     taskContent.classList.add('task');
     taskContent.id = `${id}`;
     taskContent.innerText = task;
     target.appendChild(taskContent);
-    taskContent.setAttribute('onclick', 'detailModal(this, id)')
+
+    //Cria as opções das tarefas e atribui a elas
+    let taskOptions = document.createElement('button');
+    taskOptions.innerText = 'Opções';
+    taskOptions.classList.add('optBtn');
+    taskOptions.id = `${id}`;
+    taskOptions.setAttribute('onclick', 'taskOptions(this, id)');
+    taskContent.appendChild(taskOptions);
 }
 
-function dellTask(task){
-    // tasksArray.splice(tasksArray[task.getAttribute('id')], 1)
-    
-    
+function taskOptions(opt, id){
+    console.log(tasksArray[id])
+    tasksArray.splice(id, 1)
 }
 
-dellTask()
-
-
-
-function detailModal(task, id){
-    detailsModal.style.display = 'flex';
-    let taskDetailed = document.querySelector('#detailsModal div');
-    taskDetailed.innerHTML = task.innerHTML;
-    taskDetailed.id = `${id}`;
-
-    buttonsModal.forEach((button) =>{
-        button.addEventListener('click', ()=>{
-            if(button.innerHTML == 'Concluído'){
-                console.log('conc')
-            }else if(button.innerHTML == 'Remover'){
-                dellTask(taskDetailed)
-            }else{
-                detailsModal.style.display = 'none';
-            }
-        })
-    })
-}
+//console.log(target.previousElementSibling)
 
 function warningModal(action){
     const modal = document.getElementById('avisos');
