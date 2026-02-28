@@ -2,66 +2,56 @@ const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
 const detailsModal = document.getElementById('detailsModal');
+const listaDeTarefas = document.querySelectorAll('#tarefas div')
+let buttonsModal = document.querySelectorAll('#detailsModal button');
 
-
+let tasks = localStorage.getItem('tarefas');
+let tasksArray = JSON.parse(tasks);
 
 function loadTasks(){
-    let loadTasks = localStorage.getItem('tarefas')
-
-    let listaArray = JSON.parse(loadTasks)
-    
-    for(let i = 0; i < listaArray.length; i++){
-        createTask(listaArray[i])   
+    for(let i = 0; i < tasksArray.length; i++){
+        createTask(tasksArray[i], i)
     }
 
 }
 
 
-function createTask(task){
-    
+function createTask(task, id){
     let taskContent = document.createElement('div');
     taskContent.classList.add('task');
+    taskContent.id = `${id}`;
     taskContent.innerText = task;
     target.appendChild(taskContent);
-    taskContent.setAttribute('onclick', 'detailModal(this)')
+    taskContent.setAttribute('onclick', 'detailModal(this, id)')
+}
 
+function dellTask(task){
+    // tasksArray.splice(tasksArray[task.getAttribute('id')], 1)
     
     
 }
 
-function dellTask(item){
-    console.log(item)
-}
+dellTask()
 
-let buttonsModal = document.querySelectorAll('#detailsModal button');
 
-console.log(buttonsModal)
 
-buttonsModal.forEach((button) =>{
-    button.addEventListener('click', ()=>{
-        
-        switch(button){
-            case button.innerHTML == 'Concluído':
+function detailModal(task, id){
+    detailsModal.style.display = 'flex';
+    let taskDetailed = document.querySelector('#detailsModal div');
+    taskDetailed.innerHTML = task.innerHTML;
+    taskDetailed.id = `${id}`;
+
+    buttonsModal.forEach((button) =>{
+        button.addEventListener('click', ()=>{
+            if(button.innerHTML == 'Concluído'){
                 console.log('conc')
-                break;
-            case button.innerHTML == 'Remover':
-                console.log('remo')
-                break;
-            case button.innerHTML == 'Voltar':
-                console.log('volt')
-                break;
-            default:
-                return true;
-                
-        }
+            }else if(button.innerHTML == 'Remover'){
+                dellTask(taskDetailed)
+            }else{
+                detailsModal.style.display = 'none';
+            }
+        })
     })
-})
-
-function detailModal(task){
-    // detailsModal.style.display = 'flex';
-    const taskDetailed = document.querySelector('#detailsModal p');
-    
-    
 }
 
 function warningModal(action){
