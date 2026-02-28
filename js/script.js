@@ -1,6 +1,7 @@
 const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
+const detailsModal = document.getElementById('detailsModal');
 
 
 
@@ -13,24 +14,54 @@ function loadTasks(){
         createTask(listaArray[i])   
     }
 
-
 }
-
-
 
 
 function createTask(task){
     
-    let taskContent = document.createElement('p');
-    taskContent.classList.add('task')
+    let taskContent = document.createElement('div');
+    taskContent.classList.add('task');
+    taskContent.innerText = task;
+    target.appendChild(taskContent);
+    taskContent.setAttribute('onclick', 'detailModal(this)')
+
     
-    taskContent.innerText = task
-    target.appendChild(taskContent)
     
 }
 
-function delTask(item){
-    console.log(`Tarefa: ${item}`)
+function dellTask(item){
+    console.log(item)
+}
+
+let buttonsModal = document.querySelectorAll('#detailsModal button');
+
+console.log(buttonsModal)
+
+buttonsModal.forEach((button) =>{
+    button.addEventListener('click', ()=>{
+        
+        switch(button){
+            case button.innerHTML == 'Concluído':
+                console.log('conc')
+                break;
+            case button.innerHTML == 'Remover':
+                console.log('remo')
+                break;
+            case button.innerHTML == 'Voltar':
+                console.log('volt')
+                break;
+            default:
+                return true;
+                
+        }
+    })
+})
+
+function detailModal(task){
+    // detailsModal.style.display = 'flex';
+    const taskDetailed = document.querySelector('#detailsModal p');
+    
+    
 }
 
 function warningModal(action){
