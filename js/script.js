@@ -2,8 +2,7 @@ const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
 const listaDeTarefas = document.querySelectorAll('#tarefas div')
-let tasks = localStorage.getItem('tarefas');
-let tasksArray = JSON.parse(tasks);
+let tasksArray = JSON.parse(localStorage.getItem('tarefas'));
 console.log(tasksArray)
 
 function loadTasks(){
@@ -19,6 +18,15 @@ function createTask(task, id){
     taskContent.id = `${id}`;
     taskContent.innerText = task;
     target.appendChild(taskContent);
+    
+    createOpts(taskContent, id);
+}
+
+function createOpts(target, id){
+    //Div dos botões
+    let divOpts = document.createElement('div');
+    divOpts.classList.add('opt-Box')
+    target.appendChild(divOpts);
 
     //Cria as opções das tarefas e atribui a elas
     let taskOptions = document.createElement('button');
@@ -26,15 +34,29 @@ function createTask(task, id){
     taskOptions.classList.add('optBtn');
     taskOptions.id = `${id}`;
     taskOptions.setAttribute('onclick', 'taskOptions(this, id)');
-    taskContent.appendChild(taskOptions);
+
+    
+
+    divOpts.appendChild(taskOptions);
+
+    //Cria as opções para cada tarefa
+    let optDone = document.createElement('button');
+    let optBack = document.createElement('button');
+    let optRemove = document.createElement('button');
+    
+    optDone.classList.add('opt-buttons');
+    optBack.classList.add('opt-buttons');
+    optRemove.classList.add('opt-buttons');
+
+    divOpts.appendChild(optDone);
+    divOpts.appendChild(optBack);
+    divOpts.appendChild(optRemove);
+
 }
 
 function taskOptions(opt, id){
-    console.log(tasksArray[id])
-    tasksArray.splice(id, 1)
+    
 }
-
-//console.log(target.previousElementSibling)
 
 function warningModal(action){
     const modal = document.getElementById('avisos');
@@ -56,17 +78,15 @@ function warningModal(action){
 
 function addtask(){
     if(textInput.value != ""){
-        let actualTask = textInput.value;
-        createTask(actualTask);
-        let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-
-        tarefas.push(textInput.value);
-
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-
+        createTask(textInput.value);
+        tasksArray.push(textInput.value);
+        updateLocalStorage(tasksArray);
         textInput.value='';
     }else{
         warningModal('Insira uma tarefa!');
     }
-    
+}
+
+function updateLocalStorage(array){
+    localStorage.setItem('tarefas', JSON.stringify(array));
 }
