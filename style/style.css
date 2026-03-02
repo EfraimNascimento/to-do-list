@@ -31,14 +31,11 @@ body{
     background-color: rgba(0, 0, 0, 0.400);
     
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); 
-    border: 1px solid rgba(255, 255, 255, 0.3);
-
-    position: absolute;
+    
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     z-index: 10;
 }
 
@@ -50,10 +47,10 @@ button{
     width: 100px;
     height: 40px;
     border-radius: 15px;
-    border: 1px solid white;
+    border: 1px solid black;
     cursor: pointer;
     background-color: transparent;
-    color: white;
+    color: black;
     margin: 5px;
 }
 
@@ -68,11 +65,10 @@ button:hover{
 }
 
 #to-do-container{
-    position: relative;
     background-color: black;
     color: white;
     width: 550px;
-    min-height: 400px;
+    max-height: 500px;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0px 10px 3px rgba(0, 0, 0, .100);
@@ -80,6 +76,7 @@ button:hover{
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-evenly;
+    z-index: 5;
     
 }
 
@@ -89,7 +86,7 @@ h1{
 }
 
 input[type="text"]{
-    width: 80%;
+    width: 90%;
     height: 40px;
     border-radius: 5px;
     border: none;
@@ -98,10 +95,11 @@ input[type="text"]{
 }
 
 button#add-btn{
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
     border: 1px solid white;
+    margin: 0;
     cursor: pointer;
     background-color: transparent;
     color: white;
@@ -114,43 +112,84 @@ button#add-btn:hover{
 
 #input-to-do{
     display: flex;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 #tarefas{
     width: 100%;
-    padding: 40px;
+    min-height: 320px;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 4px;
+}
+
+/* 1. Largura da barra de rolagem */
+#tarefas::-webkit-scrollbar {
+    width: 8px; /* Largura vertical */
+    height: 10px; /* Altura horizontal */
+    z-index: 1;
+}
+
+/* 2. O trilho (fundo) da barra de rolagem */
+#tarefas::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+/* 3. A parte arrastável (thumb) */
+#tarefas::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  
+}
+
+/* 4. Estilo ao passar o mouse (hover) no thumb */
+#tarefas::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#tarefas > .taskContainer{
+    margin: 5px;
+    padding: 5px;
+    color: black;
+    border-bottom: 1px solid black;
+
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 60px;
+    overflow: hidden;
 }
 
 #tarefas > .task{
-    padding: 10px;
     cursor: pointer;
-    background-color: black;
-    border: 2px solid transparent;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#tarefas > .task:hover{
-    border-radius: 5px;
-    border: 2px solid white;
+    margin: 5px;    
+    
 }
 
 .opt-Box{
-    background-color: red;
+    display: flex;
+    align-items: center;
+}
+
+.opt-Box button{
+    background-color: white;
+    color: black;
 }
 
 .opt-buttons{
-    position: fixed;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    
 }
 
 .opt-buttons:hover{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
