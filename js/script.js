@@ -13,28 +13,37 @@ function loadTasks(array){
     updateLocalStorage(array)
 }
 
-function createTask(task, id){
+function gerarID() {
+    return Math.random().toString(36).substring(2, 9) + Date.now().toString(36);
+}
+
+function createTask(item){
     //Cria uma div para envelopar as tarefas e as opções
     let taskContainer = document.createElement('div');
     taskContainer.classList.add('taskContainer');
-    taskContainer.id = `${id}`;
     target.appendChild(taskContainer);
 
     //Cria a tarefa e insere a mesma na lista
     let taskContent = document.createElement('div');
     taskContent.classList.add('task');
-    taskContent.id = `task-${id}`;
-    taskContent.innerText = task;
-    taskContainer.appendChild(taskContent);
+    taskContent.id = item.id;
+    taskContent.innerText = item.task;
+    
+    if(item.isDone == true){
+        taskContent.style.textDecoration = 'line-through';
+    }else{
+        taskContent.style.textDecoration = 'none';
+    }
 
-    createOpts(taskContainer, id);
+    taskContainer.appendChild(taskContent);    
+
+    createOpts(taskContainer, item.isDone);
 }
 
-function createOpts(target, id){
+function createOpts(target, taskState){
     //Div dos botões
     let divOpts = document.createElement('div');
     divOpts.classList.add('opt-Box')
-    divOpts.id = `box-${id}`
     target.appendChild(divOpts);
 
     //Cria as opções para cada tarefa
@@ -50,6 +59,14 @@ function createOpts(target, id){
     optDone.innerHTML = '<i class="fa-solid fa-check"></i>';
     optRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
+    if(taskState == true){
+        optDone.style.backgroundColor = 'black';
+        optDone.style.color = 'white';
+    }else{
+        optDone.style.backgroundColor = 'white';
+        optDone.style.color = 'black';
+    }
+
     optDone.setAttribute('onclick','options(this)');
     optRemove.setAttribute('onclick','options(this)');
 
@@ -58,30 +75,34 @@ function createOpts(target, id){
 }
 
 function options(opt){
-    let idNumber = opt.parentElement.id.replace(/\D/g, "");
-    let taskChecked = document.querySelector(`#tarefas #task-${idNumber}`)
+    let taskChecked = opt.parentElement.parentElement.firstChild
+    let actualTask = tasksArray.find(task => task.id === taskChecked.id)
     switch(opt != null){
     case opt.id == 'optDone':
         if(taskChecked.style.textDecoration != 'line-through'){
             taskChecked.style.textDecoration = 'line-through';
-            
             opt.style.backgroundColor = 'black'
-            opt.style.color = 'white'   
+            opt.style.color = 'white'
+            actualTask.isDone = true;
         }else{
             taskChecked.style.textDecoration = 'none';
             opt.style.backgroundColor = 'white'
             opt.style.color = 'black'
+            actualTask.isDone = false;
         }
+        updateLocalStorage(tasksArray);
     break;
     case opt.id == 'optRemove':
-        let taskToRemove = document.querySelectorAll('.taskContainer')
-        taskToRemove[idNumber].remove()
-        tasksArray.splice(idNumber, 1);
-
-        console.log(tasksArray);
-        updateLocalStorage(tasksArray);
+        removerItem(actualTask.id, taskChecked.parentElement)
         break;
     }
+}
+
+function removerItem(id, task) {
+    task.remove()
+    const lista = JSON.parse(localStorage.getItem('tarefas') || '[]');
+    const novoArray = lista.filter(task => task.id !== id);
+    localStorage.setItem('tarefas', JSON.stringify(novoArray));
 }
 
 
@@ -105,11 +126,15 @@ function warningModal(action){
 
 function addtask(){
     if(textInput.value != ""){
-        createTask(textInput.value, tasksArray.length - 1);
-        tasksArray.push(textInput.value);
-        updateLocalStorage(tasksArray);
+        const newItem = {
+            id: gerarID(),
+            task: textInput.value,
+            isDone: false
+        }
+        createTask(newItem);
         textInput.value='';
-        console.log(tasksArray)
+        tasksArray.push(newItem)
+        updateLocalStorage(tasksArray);
     }else{
         warningModal('Insira uma tarefa!');
     }
