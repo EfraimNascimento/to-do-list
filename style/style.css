@@ -168,6 +168,12 @@ button#add-btn:hover{
 #tarefas > .task{
     cursor: pointer;
     margin: 5px;    
+}
+
+.taskContainer > span{
+     
+    font-weight: bold;
+    font-size: 13px;
     
 }
 

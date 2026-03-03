@@ -8,7 +8,7 @@ window.onload = loadTasks(tasksArray)
     
 function loadTasks(array){
     for(let i = 0; i < array.length; i++){
-        createTask(array[i], i)
+        createTask(array[i], i);
     }
     updateLocalStorage(array)
 }
@@ -18,26 +18,22 @@ function gerarID() {
 }
 
 function createTask(item){
-    //Cria uma div para envelopar as tarefas e as opções
     let taskContainer = document.createElement('div');
     taskContainer.classList.add('taskContainer');
     target.appendChild(taskContainer);
 
-    //Cria a tarefa e insere a mesma na lista
     let taskContent = document.createElement('div');
     taskContent.classList.add('task');
     taskContent.id = item.id;
     taskContent.innerText = item.task;
-    
+    taskContainer.appendChild(taskContent); 
+
     if(item.isDone == true){
         taskContent.style.textDecoration = 'line-through';
     }else{
         taskContent.style.textDecoration = 'none';
     }
-
-    taskContainer.appendChild(taskContent);    
-
-    createOpts(taskContainer, item.isDone);
+    createOpts(taskContainer, item);
 }
 
 function createOpts(target, taskState){
@@ -49,7 +45,7 @@ function createOpts(target, taskState){
     //Cria as opções para cada tarefa
     let optDone = document.createElement('button');
     let optRemove = document.createElement('button');
-    
+
     optDone.classList.add('opt-buttons');
     optRemove.classList.add('opt-buttons');
 
@@ -59,12 +55,16 @@ function createOpts(target, taskState){
     optDone.innerHTML = '<i class="fa-solid fa-check"></i>';
     optRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
-    if(taskState == true){
+    if(taskState.isDone == true){
+
         optDone.style.backgroundColor = 'black';
         optDone.style.color = 'white';
+        
     }else{
+
         optDone.style.backgroundColor = 'white';
         optDone.style.color = 'black';
+        
     }
 
     optDone.setAttribute('onclick','options(this)');
@@ -77,6 +77,7 @@ function createOpts(target, taskState){
 function options(opt){
     let taskChecked = opt.parentElement.parentElement.firstChild
     let actualTask = tasksArray.find(task => task.id === taskChecked.id)
+
     switch(opt != null){
     case opt.id == 'optDone':
         if(taskChecked.style.textDecoration != 'line-through'){
@@ -84,12 +85,15 @@ function options(opt){
             opt.style.backgroundColor = 'black'
             opt.style.color = 'white'
             actualTask.isDone = true;
+            actualTask.time = dateAndTime();
         }else{
             taskChecked.style.textDecoration = 'none';
             opt.style.backgroundColor = 'white'
             opt.style.color = 'black'
             actualTask.isDone = false;
+            actualTask.time = "";
         }
+
         updateLocalStorage(tasksArray);
     break;
     case opt.id == 'optRemove':
@@ -100,13 +104,15 @@ function options(opt){
 
 function removerItem(id, task) {
     task.remove()
+
     const lista = JSON.parse(localStorage.getItem('tarefas') || '[]');
+
     const novoArray = lista.filter(task => task.id !== id);
-    localStorage.setItem('tarefas', JSON.stringify(novoArray));
+    updateLocalStorage(novoArray)
 }
 
-
 function warningModal(action){
+
     const modal = document.getElementById('avisos');
 
     switch(!action){
@@ -114,9 +120,11 @@ function warningModal(action){
             modal.style.display = 'flex';
             warnings.innerText = action;
             break;
+
         case action == 'close':
             modal.style.display = 'none';
             break;
+
         default:
             modal.style.display = 'none';
     }
@@ -124,12 +132,25 @@ function warningModal(action){
 }
 
 
+
+function dateAndTime(){
+    const now = new Date();
+
+    return now.toLocaleString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit'
+    });
+}
+
 function addtask(){
     if(textInput.value != ""){
         const newItem = {
             id: gerarID(),
             task: textInput.value,
-            isDone: false
+            isDone: false,
+            time: "", 
         }
         createTask(newItem);
         textInput.value='';
@@ -139,6 +160,24 @@ function addtask(){
         warningModal('Insira uma tarefa!');
     }
 }
+
+textInput.addEventListener('keydown', (e)=>{
+    if(e.key == "Enter"){
+        if(textInput.value != ""){
+            const newItem = {
+                id: gerarID(),
+                task: textInput.value,
+                isDone: false
+            }
+            createTask(newItem);
+            textInput.value='';
+            tasksArray.push(newItem)
+            updateLocalStorage(tasksArray);
+        }else{
+            warningModal('Insira uma tarefa!');
+        }
+    }
+})
 
 function updateLocalStorage(array){
     localStorage.setItem('tarefas', JSON.stringify(array));
