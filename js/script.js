@@ -171,5 +171,4 @@ textInput.addEventListener('keydown', (e)=>{
 
 function updateLocalStorage(array){
     localStorage.setItem('tarefas', JSON.stringify(array));
-    console.log(tasksArray)
 }
