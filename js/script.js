@@ -2,7 +2,7 @@ const textInput = document.getElementById('text-input');
 const target = document.getElementById('tarefas');
 const warnings = document.getElementById('aviso');
 
-let tasksArray = JSON.parse(localStorage.getItem('tarefas'));
+let tasksArray = JSON.parse(localStorage.getItem('tarefas') || '[]');
 
 window.onload = loadTasks(tasksArray);
 
