@@ -4,8 +4,8 @@ const warnings = document.getElementById('aviso');
 
 let tasksArray = JSON.parse(localStorage.getItem('tarefas'));
 
-window.onload = loadTasks(tasksArray)
-    
+window.onload = loadTasks(tasksArray);
+
 function loadTasks(array){
     for(let i = 0; i < array.length; i++){
         createTask(array[i], i);
@@ -33,16 +33,15 @@ function createTask(item){
     }else{
         taskContent.style.textDecoration = 'none';
     }
+
     createOpts(taskContainer, item);
 }
 
 function createOpts(target, taskState){
-    //Div dos botões
     let divOpts = document.createElement('div');
     divOpts.classList.add('opt-Box')
     target.appendChild(divOpts);
 
-    //Cria as opções para cada tarefa
     let optDone = document.createElement('button');
     let optRemove = document.createElement('button');
 
@@ -56,15 +55,11 @@ function createOpts(target, taskState){
     optRemove.innerHTML = '<i class="fa-solid fa-xmark"></i>';
 
     if(taskState.isDone == true){
-
         optDone.style.backgroundColor = 'black';
         optDone.style.color = 'white';
-        
     }else{
-
         optDone.style.backgroundColor = 'white';
         optDone.style.color = 'black';
-        
     }
 
     optDone.setAttribute('onclick','options(this)');
@@ -93,7 +88,6 @@ function options(opt){
             actualTask.isDone = false;
             actualTask.time = "";
         }
-
         updateLocalStorage(tasksArray);
     break;
     case opt.id == 'optRemove':
@@ -112,7 +106,6 @@ function removerItem(id, task) {
 }
 
 function warningModal(action){
-
     const modal = document.getElementById('avisos');
 
     switch(!action){
@@ -128,10 +121,7 @@ function warningModal(action){
         default:
             modal.style.display = 'none';
     }
-
 }
-
-
 
 function dateAndTime(){
     const now = new Date();
@@ -152,10 +142,10 @@ function addtask(){
             isDone: false,
             time: "", 
         }
+        tasksArray.push(newItem);
+        updateLocalStorage(tasksArray);
         createTask(newItem);
         textInput.value='';
-        tasksArray.push(newItem)
-        updateLocalStorage(tasksArray);
     }else{
         warningModal('Insira uma tarefa!');
     }
@@ -169,10 +159,10 @@ textInput.addEventListener('keydown', (e)=>{
                 task: textInput.value,
                 isDone: false
             }
+            tasksArray.push(newItem);
+            updateLocalStorage(tasksArray);
             createTask(newItem);
             textInput.value='';
-            tasksArray.push(newItem)
-            updateLocalStorage(tasksArray);
         }else{
             warningModal('Insira uma tarefa!');
         }
@@ -181,4 +171,5 @@ textInput.addEventListener('keydown', (e)=>{
 
 function updateLocalStorage(array){
     localStorage.setItem('tarefas', JSON.stringify(array));
+    console.log(tasksArray)
 }
